@@ -7,7 +7,7 @@ test('login', async ({page}) => {
     await page.locator('input#password').fill('pass');
     await page.locator('//button[@type=\'submit\']').click(); //localizar en la pagina, por xpath
     //se coloca \ antes de cada coma porque marca error por xpath por muchas comas
-    await page.locator('//button[text()="Añadir transacción"]').click();
+    await page.locator('//button[text()="Añadir transacción"]').click(); //localizar en la pagina, por xpath, buscando el boton que contiene el texto "Añadir trans
 
     await page.waitForLoadState('load'); //espera a que la pagina cargue completamente, para evitar errores de localizacion de elementos
 
@@ -18,6 +18,7 @@ test('login', async ({page}) => {
     await page.locator('id=amount').fill('500'); 
     await page.locator('id=description').fill('Descripcion de prueba'); 
     await page.locator('//button[contains(text(),"Guardar")]').click(); //se coloca " en lugar de ' porque marca error por xpath.
+    //Se localiza el boton de guardar mediante xpath, buscando el boton que contiene el texto "Guardar"
 
     const actualfecha = await page.locator('//tbody[@id="transactions-list"]//tr[1]//td[1]').textContent();
     //Se crea una constante para almacenar el valor de la fecha de la transaccion agregada, se localiza mediante xpath, buscando en el tbody con id transactions-list, en la primera fila y primera columna
