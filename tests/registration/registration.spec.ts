@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test('registration', async ({ page }) =>  {
+test('registration', async ({ page} , testInfo ) =>  {
     await page.goto('http://127.0.0.1:5500/register.html');
 
     const name='Sofia';
@@ -23,6 +23,16 @@ test('registration', async ({ page }) =>  {
     await page.locator('id=picture').setInputFiles('images/gatito.jpg'); //se localiza el input de tipo file mediante id, y se le asigna un archivo para subirlo, la imagen esta en la carpeta images del proyecto
     //Promise.all() espera a que ambas promesas terminen y devuelve un array con los resultados de ambas promesas [popupPage,undefined] pero en lista.
     //Toma el primer elemento del array que devuelve Promise.all() y guárdalo en summaryPage
+
+    //testInfo.attach() se usa para adjuntar un archivo al reporte de la prueba, en este caso se adjunta un screenshot de la pagina, para poder ver el estado de la pagina en el momento de la prueba.
+    /*
+    await testInfo.attach('register1', {
+        body: await page.screenshot(),
+        contentType: 'image/png',
+    });*/
+
+    //await page.screenshot({ path: 'screenshots/registration1.png' }); //se toma un screenshot de la pagina y se guarda en la carpeta screenshots del proyecto, con el nombre registration1.png
+
     const [summaryPage] = await Promise.all([
         page.waitForEvent('popup'), //se espera a que se abra una nueva ventana, ya que al hacer click en el boton de guardar se abre una nueva ventana con la informacion del registro
         page.locator('id=save-btn').click()
@@ -40,4 +50,28 @@ test('registration', async ({ page }) =>  {
     expect(currentLastname).toContain(lastname);
     expect(currentAge).toContain(age);
     await page.pause();
+    /*
+    await testInfo.attach('register2', {
+        body: await summaryPage.screenshot(),
+        contentType: 'image/png',
+    });*/
+
+    //await summaryPage.screenshot({ path: 'screenshots/registration2.png' }); 
+    
+})
+
+test('registration-failure', async ({ page} , testInfo ) =>  {
+    await page.goto('http://127.0.0.1:5500/register.html');
+
+    const name='Sofia';
+    const lastname='Niño';
+    const age='30';  
+    const country='Mexico';
+    const sex='F';
+    const email='sofia@mail.com';
+
+    await page.locator('id=name').fill(name);
+
+    expect(true).toEqual(false); //se espera que el valor booleano true sea igual a false, lo cual es falso, por lo que la prueba fallara y se generara un reporte de error
+
 })
