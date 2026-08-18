@@ -1,12 +1,19 @@
 import {test, expect} from '@playwright/test';
+import { LoginPage } from '../../pageobjets/login/LoginPage';
 
 test('login', async ({page}) => {
-    await page.goto('http://127.0.0.1:5500/login.html');
+    await page.goto('http://127.0.0.1:5501/login.html');
 
-    await page.locator('input#username').fill('user'); //localizar en la pagina, por css selector
-    await page.locator('input#password').fill('pass');
-    await page.locator('//button[@type=\'submit\']').click(); //localizar en la pagina, por xpath
+    // await page.locator('input#username').fill('user'); //localizar en la pagina, por css selector
+    // await page.locator('input#password').fill('pass');
+    // await page.locator('//button[@type=\'submit\']').click(); //localizar en la pagina, por xpath
     //se coloca \ antes de cada coma porque marca error por xpath por muchas comas
+    
+    const loginPage = new LoginPage(page); //Se crea una instancia de la clase LoginPage, pasando el objeto page como parametro, para poder utilizar los metodos de la clase LoginPage en el test
+    await loginPage.fillusername(); 
+    await loginPage.fillpassword();
+    await loginPage.clickLoginButton(); //Se llama al metodo clickLoginButton de la clase LoginPage, para hacer clic en el boton de inicio de sesion
+
     await page.locator('//button[text()="Añadir transacción"]').click(); //localizar en la pagina, por xpath, buscando el boton que contiene el texto "Añadir trans
 
     await page.waitForLoadState('load'); //espera a que la pagina cargue completamente, para evitar errores de localizacion de elementos
