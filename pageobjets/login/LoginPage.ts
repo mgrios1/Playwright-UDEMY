@@ -16,16 +16,25 @@ export class LoginPage {
         this.loginButton = page.locator('//button[@type=\'submit\']');
     }
 
-    async fillusername(){
-      await this.usernameTextbox.fill('user');
+    private async fillusername(username: string){
+      await this.usernameTextbox.fill(username);
     }
 
-    async fillpassword(){
-      await this.passwordTextbox.fill('pass');
+    private async fillpassword(password: string){
+      await this.passwordTextbox.fill(password);
     }
 //El método clickLoginButton es un método público que realiza la acción de hacer clic en el botón de inicio de sesión. 
 //Utiliza la propiedad loginButton para localizar el elemento y llamar al método click() de Playwright, que simula un clic en el botón.   
-    async clickLoginButton(){
+    private async clickLoginButton(){
       await this.loginButton.click();
     }
+
+//dologin es un método público que realiza el flujo completo de inicio de sesión. Recibe el nombre de usuario y la contraseña como parámetros y llama a los métodos fillusername, fillpassword y clickLoginButton en secuencia para completar el proceso de inicio de sesión.
+//this significa la instancia actual de la clase
+    async doLogin(username: string, password: string) {
+        await this.fillusername(username)
+        await this.fillpassword(password)
+        await this.clickLoginButton()
+    }
+
 }
